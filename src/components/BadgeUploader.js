@@ -13,6 +13,13 @@ const BadgeUploader = () => {
   const [verificationError, setVerificationError] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [isImagePng, setIsImagePng] = useState(true);
+  const [isImageOfCorrectSize, setIsImageOfCorrectSize] = useState(true);
+  const [
+    isImageVisiblePixelsInsideCircle,
+    setIsImageVisiblePixelsInsideCircle,
+  ] = useState(true);
+  const [isImageBorderHappy, setIsImageBorderHappy] = useState(true);
 
   const containerStyle = {
     textAlign: "center",
@@ -129,6 +136,10 @@ const BadgeUploader = () => {
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         image={image}
+        isImagePNG={isImagePng}
+        isImagePNGOfCorrectSize={isImageOfCorrectSize}
+        isImagePNGVisiblePixelsInsideCircle={isImageVisiblePixelsInsideCircle}
+        isImagePNGBorderHappy={isImageBorderHappy}
       />
     </div>
   );

@@ -27,9 +27,19 @@ const ButtonContainer = styled.div`
   padding: 1.5rem;
 `;
 
-const ImageModal = ({ isOpen, onRequestClose, image }) => {
+const ImageModal = ({
+  isOpen,
+  onRequestClose,
+  image,
+  isImagePNG,
+  isImagePNGOfCorrectSize,
+  isImagePNGVisiblePixelsInsideCircle,
+  isImagePNGBorderHappy,
+}) => {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [submitModalOpen, setSubmitModalOpen] = useState(false);
+  let modalMessage = "";
+  let modalButtons = <></>;
 
   const modalStyle = {
     content: {
@@ -65,6 +75,70 @@ const ImageModal = ({ isOpen, onRequestClose, image }) => {
     onRequestClose();
   };
 
+  const convertImageToProperFormat = () => {
+    return;
+  };
+  const resizeImageToCorrectDimensions = () => {};
+  const useOurImageBorder = () => {};
+  const adjustImage = () => {};
+
+  if (isImagePNG) {
+    if (isImagePNGOfCorrectSize) {
+      if (isImagePNGVisiblePixelsInsideCircle) {
+        if (isImagePNGBorderHappy) {
+          modalMessage =
+            "Congratulations! Your badge is ready to be uploaded to your profile.";
+          modalButtons = (
+            <ButtonContainer>
+              <LinkButton onClick={downloadImage}>Download</LinkButton>
+              <LinkButton onClick={openSubmitModal}>Submit</LinkButton>
+            </ButtonContainer>
+          );
+        } else {
+          modalMessage =
+            "OOPS! Your uploaded badge border colour is not a happy color.";
+          modalButtons = (
+            <ButtonContainer>
+              <LinkButton onClick={useOurImageBorder}>
+                Use PMs Border
+              </LinkButton>
+              <LinkButton onClick={onRequestClose}>Close</LinkButton>
+            </ButtonContainer>
+          );
+        }
+      } else {
+        modalMessage =
+          "OOPS! Your uploaded badge visible pixels are not indside the circle.";
+        modalButtons = (
+          <ButtonContainer>
+            <LinkButton onClick={adjustImage}>Adjust Image</LinkButton>
+            <LinkButton onClick={onRequestClose}>Close</LinkButton>
+          </ButtonContainer>
+        );
+      }
+    } else {
+      modalMessage = "OOPS! Your uploaded badge is not of correct dimensions.";
+      modalButtons = (
+        <ButtonContainer>
+          <LinkButton onClick={resizeImageToCorrectDimensions}>
+            Resize Image
+          </LinkButton>
+          <LinkButton onClick={onRequestClose}>Close</LinkButton>
+        </ButtonContainer>
+      );
+    }
+  } else {
+    modalMessage = "OOPS! Your uploaded badge is not of PNG format.";
+    modalButtons = (
+      <ButtonContainer>
+        <LinkButton onClick={convertImageToProperFormat}>
+          Convert Image
+        </LinkButton>
+        <LinkButton onClick={onRequestClose}>Close</LinkButton>
+      </ButtonContainer>
+    );
+  }
+
   return (
     <>
       <Modal
@@ -74,17 +148,14 @@ const ImageModal = ({ isOpen, onRequestClose, image }) => {
         ariaHideApp={false}
       >
         <CloseButton onClick={onRequestClose}>×</CloseButton>
-        <p>Congratulations you have created your badge!</p>
+        <p>{modalMessage}</p>
         <ImageContainer>
           <img
             src={image}
             style={{ width: "20vh", height: "20vh" }}
             alt="Uploaded Badge"
           />
-          <ButtonContainer>
-            <LinkButton onClick={downloadImage}>Download</LinkButton>
-            <LinkButton onClick={openSubmitModal}>Submit</LinkButton>
-          </ButtonContainer>
+          {modalButtons}
         </ImageContainer>
       </Modal>
       {submitModalOpen && (

@@ -13,6 +13,10 @@ describe("ImageModal", () => {
         isOpen={true}
         onRequestClose={onRequestCloseMock}
         image={mockImage}
+        isImagePNG={true}
+        isImagePNGOfCorrectSize={true}
+        isImagePNGVisiblePixelsInsideCircle={true}
+        isImagePNGBorderHappy={true}
       />
     );
 
@@ -33,6 +37,10 @@ describe("ImageModal", () => {
         isOpen={true}
         onRequestClose={onRequestCloseMock}
         image={mockImage}
+        isImagePNG={true}
+        isImagePNGOfCorrectSize={true}
+        isImagePNGVisiblePixelsInsideCircle={true}
+        isImagePNGBorderHappy={true}
       />
     );
 
@@ -50,6 +58,10 @@ describe("ImageModal", () => {
         isOpen={true}
         onRequestClose={onRequestCloseMock}
         image={mockImage}
+        isImagePNG={true}
+        isImagePNGOfCorrectSize={true}
+        isImagePNGVisiblePixelsInsideCircle={true}
+        isImagePNGBorderHappy={true}
       />
     );
 
