@@ -35,6 +35,9 @@ const ImageModal = ({
   isImagePNGOfCorrectSize,
   isImagePNGVisiblePixelsInsideCircle,
   isImagePNGBorderHappy,
+  convertImg,
+  resizeImg,
+  adjustImageInsideCircle,
 }) => {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [submitModalOpen, setSubmitModalOpen] = useState(false);
@@ -75,9 +78,6 @@ const ImageModal = ({
     onRequestClose();
   };
 
-  const convertImageToProperFormat = () => {
-    return;
-  };
   const resizeImageToCorrectDimensions = () => {};
   const useOurImageBorder = () => {};
   const adjustImage = () => {};
@@ -111,7 +111,9 @@ const ImageModal = ({
           "OOPS! Your uploaded badge visible pixels are not indside the circle.";
         modalButtons = (
           <ButtonContainer>
-            <LinkButton onClick={adjustImage}>Adjust Image</LinkButton>
+            <LinkButton onClick={adjustImageInsideCircle}>
+              Adjust Image
+            </LinkButton>
             <LinkButton onClick={onRequestClose}>Close</LinkButton>
           </ButtonContainer>
         );
@@ -120,9 +122,7 @@ const ImageModal = ({
       modalMessage = "OOPS! Your uploaded badge is not of correct dimensions.";
       modalButtons = (
         <ButtonContainer>
-          <LinkButton onClick={resizeImageToCorrectDimensions}>
-            Resize Image
-          </LinkButton>
+          <LinkButton onClick={resizeImg}>Resize Image</LinkButton>
           <LinkButton onClick={onRequestClose}>Close</LinkButton>
         </ButtonContainer>
       );
@@ -131,9 +131,7 @@ const ImageModal = ({
     modalMessage = "OOPS! Your uploaded badge is not of PNG format.";
     modalButtons = (
       <ButtonContainer>
-        <LinkButton onClick={convertImageToProperFormat}>
-          Convert Image
-        </LinkButton>
+        <LinkButton onClick={convertImg}>Convert Image</LinkButton>
         <LinkButton onClick={onRequestClose}>Close</LinkButton>
       </ButtonContainer>
     );

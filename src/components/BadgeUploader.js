@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ImageModal from "./ImageModal";
 import { LabelButton } from "./core/Button";
@@ -6,6 +6,10 @@ import { createAngledGradientBorder } from "./../helper/CreateAngledGradiantBord
 import { createCircularBadge } from "./../helper/CreateCircularBadge";
 import { resizeImage } from "../helper/ResizeImage";
 import { verifyBadgeFormat } from "../helper/VerifyBadgeFormat";
+import { verifyPngFormat } from "../helper/verifyPngFormat";
+import { formatConverter } from "../helper/FormatConverter";
+import { verifySize } from "../helper/VerifySize";
+import { imageVerification } from "../helper/ImageVerification";
 
 const BadgeUploader = () => {
   const [image, setImage] = useState(null);
@@ -13,12 +17,12 @@ const BadgeUploader = () => {
   const [verificationError, setVerificationError] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [isImagePng, setIsImagePng] = useState(true);
-  const [isImageOfCorrectSize, setIsImageOfCorrectSize] = useState(true);
+  const [isImagePng, setIsImagePng] = useState(false);
+  const [isImageOfCorrectSize, setIsImageOfCorrectSize] = useState(false);
   const [
     isImageVisiblePixelsInsideCircle,
     setIsImageVisiblePixelsInsideCircle,
-  ] = useState(true);
+  ] = useState(false);
   const [isImageBorderHappy, setIsImageBorderHappy] = useState(true);
 
   const containerStyle = {
@@ -41,6 +45,102 @@ const BadgeUploader = () => {
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
   };
 
+  const handleImageExtension = () => {
+    const pngFormat = formatConverter(image);
+    setImage(pngFormat);
+    setIsImagePng(true);
+    hideModal();
+  };
+
+  const handleImageSize = async () => {
+    const correctSize = await resizeImage(image, 512, 512);
+    setImage(correctSize);
+    setIsImageOfCorrectSize(true);
+    hideModal();
+  };
+
+  const handleImagePixelsInsideCircle = async () => {
+    const insideCircle = await createCircularBadge(image);
+    setImage(insideCircle);
+    setIsImageVisiblePixelsInsideCircle(true);
+    hideModal();
+  };
+
+  useEffect(() => {
+    if (image) {
+      revisitFlow();
+    }
+  }, [image]);
+
+  const revisitFlow = async () => {
+    const uploadInterval = setInterval(() => {
+      setUploadProgress((prevProgress) => Math.min(prevProgress + 1, 100));
+    }, 3000);
+
+    let circularBorderImage = null;
+    if (await verifyBadgeFormat(image)) {
+      clearInterval(uploadInterval);
+      setUploadProgress(20);
+      // const resizedImageData = await resizeImage(imageData, 482, 482);
+      // const circularBadge = await createCircularBadge(resizedImageData);
+      // const gradientColors = [
+      //   "Red",
+      //   "orange",
+      //   "yellow",
+      //   "green",
+      //   "blue",
+      //   "indigo",
+      //   "violet",
+      // ]; // Customize with your desired colors
+      // circularBorderImage = await createAngledGradientBorder(
+      //   imageData,
+      //   gradientColors,
+      //   45
+      // );
+
+      // Set the circular border image as the image state
+      if (await verifyPngFormat(image)) {
+        setIsImagePng(true);
+        clearInterval(uploadInterval);
+        setUploadProgress(40);
+        if (await verifySize(image)) {
+          setIsImageOfCorrectSize(true);
+          clearInterval(uploadInterval);
+          setUploadProgress(60);
+          if (await imageVerification(image)) {
+            setIsImageVisiblePixelsInsideCircle(true);
+            clearInterval(uploadInterval);
+            setUploadProgress(80);
+          } else {
+            setIsImageVisiblePixelsInsideCircle(false);
+            clearInterval(uploadInterval);
+            setUploadProgress(0);
+            openModal();
+          }
+        } else {
+          setIsImageOfCorrectSize(false);
+          clearInterval(uploadInterval);
+          setUploadProgress(0);
+          openModal();
+        }
+      } else {
+        setIsImagePng(false);
+        clearInterval(uploadInterval);
+        setUploadProgress(0);
+        openModal();
+      }
+    } else {
+      clearInterval(uploadInterval);
+      setUploadProgress(0);
+      setVerificationError(
+        "Invalid image format. We only support .png, .jpg or .jpeg"
+      );
+      setImage(null);
+    }
+
+    setUploading(false);
+  };
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -53,34 +153,59 @@ const BadgeUploader = () => {
 
         // Simulate image upload progress
         const uploadInterval = setInterval(() => {
-          setUploadProgress((prevProgress) => Math.min(prevProgress + 10, 100));
-        }, 300);
+          setUploadProgress((prevProgress) => Math.min(prevProgress + 1, 100));
+        }, 3000);
 
         let circularBorderImage = null;
         if (await verifyBadgeFormat(imageData)) {
           clearInterval(uploadInterval);
-          setUploadProgress(100);
-          const resizedImageData = await resizeImage(imageData, 482, 482);
-          const circularBadge = await createCircularBadge(resizedImageData);
-          const gradientColors = [
-            "Red",
-            "orange",
-            "yellow",
-            "green",
-            "blue",
-            "indigo",
-            "violet",
-          ]; // Customize with your desired colors
-          circularBorderImage = await createAngledGradientBorder(
-            imageData,
-            gradientColors,
-            45
-          );
+          setUploadProgress(20);
+          // const resizedImageData = await resizeImage(imageData, 482, 482);
+          // const circularBadge = await createCircularBadge(resizedImageData);
+          // const gradientColors = [
+          //   "Red",
+          //   "orange",
+          //   "yellow",
+          //   "green",
+          //   "blue",
+          //   "indigo",
+          //   "violet",
+          // ]; // Customize with your desired colors
+          // circularBorderImage = await createAngledGradientBorder(
+          //   imageData,
+          //   gradientColors,
+          //   45
+          // );
 
           // Set the circular border image as the image state
-          setImage(circularBorderImage);
-
-          setVerificationError(null);
+          setImage(imageData);
+          if (await verifyPngFormat(imageData)) {
+            setIsImagePng(true);
+            clearInterval(uploadInterval);
+            setUploadProgress(40);
+            if (await verifySize(imageData)) {
+              setIsImageOfCorrectSize(true);
+              clearInterval(uploadInterval);
+              setUploadProgress(60);
+              if (await imageVerification(imageData)) {
+                setIsImageVisiblePixelsInsideCircle(true);
+                clearInterval(uploadInterval);
+                setUploadProgress(80);
+              } else {
+                clearInterval(uploadInterval);
+                setUploadProgress(0);
+                openModal();
+              }
+            } else {
+              clearInterval(uploadInterval);
+              setUploadProgress(0);
+              openModal();
+            }
+          } else {
+            clearInterval(uploadInterval);
+            setUploadProgress(0);
+            openModal();
+          }
         } else {
           clearInterval(uploadInterval);
           setUploadProgress(0);
@@ -102,6 +227,10 @@ const BadgeUploader = () => {
 
   const openModal = () => {
     setIsModalOpen(true);
+  };
+
+  const hideModal = () => {
+    setIsModalOpen(false);
   };
 
   const closeModal = () => {
@@ -140,6 +269,9 @@ const BadgeUploader = () => {
         isImagePNGOfCorrectSize={isImageOfCorrectSize}
         isImagePNGVisiblePixelsInsideCircle={isImageVisiblePixelsInsideCircle}
         isImagePNGBorderHappy={isImageBorderHappy}
+        convertImg={handleImageExtension}
+        resizeImg={handleImageSize}
+        adjustImageInsideCircle={handleImagePixelsInsideCircle}
       />
     </div>
   );
