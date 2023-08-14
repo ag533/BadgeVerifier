@@ -1,4 +1,4 @@
-export const verifySize = (img) => {
+export const isImageOfRightSize = (img) => {
   return new Promise((resolve) => {
     const image = new Image();
     image.src = img;

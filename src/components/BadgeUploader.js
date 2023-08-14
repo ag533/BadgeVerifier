@@ -4,11 +4,11 @@ import ImageModal from "./ImageModal";
 import { LabelButton } from "./core/Button";
 import { createCircularBadge } from "./../helper/CreateCircularBadge";
 import { resizeImage } from "../helper/ResizeImage";
-import { verifyBadgeFormat } from "../helper/VerifyBadgeFormat";
-import { verifyPngFormat } from "../helper/verifyPngFormat";
-import { formatConverter } from "../helper/FormatConverter";
-import { verifySize } from "../helper/VerifySize";
-import { imageVerification } from "../helper/ImageVerification";
+import { isUploadedFileAnImage } from "../helper/IsUploadedFileAnImage";
+import { isImageInPNGFormat } from "../helper/IsImageInPNGFormat";
+import { imageToPNG } from "../helper/ImageToPNG";
+import { isImageOfRightSize } from "../helper/IsImageOfRightSize";
+import { isImageInsideTheCircle } from "../helper/IsImageInsideTheCircle";
 import { checkHappiness } from "../helper/CheckHappiness";
 
 const BadgeUploader = () => {
@@ -46,7 +46,7 @@ const BadgeUploader = () => {
   };
 
   const handleImageExtension = () => {
-    const pngFormat = formatConverter(image);
+    const pngFormat = imageToPNG(image);
     setImage(pngFormat);
     setIsImagePng(true);
     hideModal();
@@ -79,12 +79,12 @@ const BadgeUploader = () => {
     }, 300);
 
     let circularBorderImage = null;
-    if (await verifyBadgeFormat(image)) {
-      if (await verifyPngFormat(image)) {
+    if (await isUploadedFileAnImage(image)) {
+      if (await isImageInPNGFormat(image)) {
         setIsImagePng(true);
-        if (await verifySize(image)) {
+        if (await isImageOfRightSize(image)) {
           setIsImageOfCorrectSize(true);
-          if (await imageVerification(image)) {
+          if (await isImageInsideTheCircle(image)) {
             setIsImageVisiblePixelsInsideCircle(true);
             if (await checkHappiness(image)) {
               setIsImageBorderHappy(true);

@@ -1,4 +1,4 @@
-export const imageVerification = (imageSrc) => {
+export const isImageInsideTheCircle = (imageSrc) => {
   return new Promise((resolve) => {
     const img = new Image();
     img.src = imageSrc;
