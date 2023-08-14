@@ -1,3 +1,4 @@
+<img width="1920" alt="Screenshot 2023-08-14 at 06 09 01" src="https://github.com/ag533/BadgeVerifier/assets/43811969/5f9618a1-dddd-43b9-aef4-682d482dc08c">
 # Setting up the project locally
 
 ## Available Scripts
@@ -36,22 +37,28 @@ To run all the tests
       i. isPng -> step 3
 
       ii. isNotPng -> Ask if they want to convert the image to png format.
+<img width="1920" alt="Screenshot 2023-08-14 at 06 09 37" src="https://github.com/ag533/BadgeVerifier/assets/43811969/d22252d7-9613-4443-9697-af19e7e87f9e">
 
    3. Check the dimensions
 
       i. correctDimensions -> step 4
 
       ii. incorrectDimensions -> Ask if they want to resize the image.
+<img width="1920" alt="Screenshot 2023-08-14 at 06 09 47" src="https://github.com/ag533/BadgeVerifier/assets/43811969/130fb6f3-b311-4fe1-85e6-49bda0903605">
 
    4. Check if circular
 
       i. isCircular -> step 5
 
       ii. isNotCircular -> Ask if they want to create a circular image.
+<img width="1920" alt="Screenshot 2023-08-14 at 06 22 45" src="https://github.com/ag533/BadgeVerifier/assets/43811969/948638a7-324c-403e-a6ea-b60bfcbb88cc">
 
    5. Check if happy colors
 
       i. happyColors -> Download or Upload
+<img width="1920" alt="Screenshot 2023-08-14 at 06 10 45" src="https://github.com/ag533/BadgeVerifier/assets/43811969/de825a13-e311-46c8-9535-7f9bbb4af8d5">
+<img width="1920" alt="Screenshot 2023-08-14 at 06 10 20" src="https://github.com/ag533/BadgeVerifier/assets/43811969/b9d789f0-7426-44e4-ade4-fcc768679131">
+<img width="1101" alt="Screenshot 2023-08-14 at 06 10 37" src="https://github.com/ag533/BadgeVerifier/assets/43811969/3d2f776b-e18f-43a4-a738-c901c69fa65b">
 
       ii. notHappyColors -> upload new image
 
