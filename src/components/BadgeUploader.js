@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ImageModal from "./ImageModal";
 import { LabelButton } from "./core/Button";
-import { createAngledGradientBorder } from "./../helper/CreateAngledGradiantBorder";
 import { createCircularBadge } from "./../helper/CreateCircularBadge";
 import { resizeImage } from "../helper/ResizeImage";
 import { verifyBadgeFormat } from "../helper/VerifyBadgeFormat";
