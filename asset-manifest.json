@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.2b09a38d.css",
+    "main.js": "/static/js/main.d8f11b14.js",
+    "static/js/787.28a6824b.chunk.js": "/static/js/787.28a6824b.chunk.js",
+    "static/media/badge_image.png": "/static/media/badge_image.3f4d97495ac6efcfd5c0.png",
+    "static/media/playmakers_logo.png": "/static/media/playmakers_logo.bb1427a5691d18e297e4.png",
+    "index.html": "/index.html",
+    "main.2b09a38d.css.map": "/static/css/main.2b09a38d.css.map",
+    "main.d8f11b14.js.map": "/static/js/main.d8f11b14.js.map",
+    "787.28a6824b.chunk.js.map": "/static/js/787.28a6824b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2b09a38d.css",
+    "static/js/main.d8f11b14.js"
+  ]
+}
