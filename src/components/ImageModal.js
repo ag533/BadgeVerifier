@@ -96,13 +96,12 @@ const ImageModal = ({
           );
         } else {
           modalMessage =
-            "OOPS! Your uploaded badge border colour is not a happy color.";
+            "OOPS! Your uploaded image colour does not give a happy feeling.";
           modalButtons = (
             <ButtonContainer>
-              <LinkButton onClick={useOurImageBorder}>
-                Use PMs Border
+              <LinkButton onClick={onRequestClose}>
+                Use another picture
               </LinkButton>
-              <LinkButton onClick={onRequestClose}>Close</LinkButton>
             </ButtonContainer>
           );
         }

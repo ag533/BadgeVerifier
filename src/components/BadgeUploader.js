@@ -10,6 +10,7 @@ import { verifyPngFormat } from "../helper/verifyPngFormat";
 import { formatConverter } from "../helper/FormatConverter";
 import { verifySize } from "../helper/VerifySize";
 import { imageVerification } from "../helper/ImageVerification";
+import { checkHappiness } from "../helper/CheckHappiness";
 
 const BadgeUploader = () => {
   const [image, setImage] = useState(null);
@@ -23,7 +24,7 @@ const BadgeUploader = () => {
     isImageVisiblePixelsInsideCircle,
     setIsImageVisiblePixelsInsideCircle,
   ] = useState(false);
-  const [isImageBorderHappy, setIsImageBorderHappy] = useState(true);
+  const [isImageBorderHappy, setIsImageBorderHappy] = useState(false);
 
   const containerStyle = {
     textAlign: "center",
@@ -52,15 +53,15 @@ const BadgeUploader = () => {
     hideModal();
   };
 
-  const handleImageSize = () => {
-    const correctSize = resizeImage(image, 512, 512);
+  const handleImageSize = async () => {
+    const correctSize = await resizeImage(image, 512, 512);
     setImage(correctSize);
     setIsImageOfCorrectSize(true);
     hideModal();
   };
 
-  const handleImagePixelsInsideCircle = () => {
-    const insideCircle = createCircularBadge(image);
+  const handleImagePixelsInsideCircle = async () => {
+    const insideCircle = await createCircularBadge(image);
     setImage(insideCircle);
     setIsImageVisiblePixelsInsideCircle(true);
     hideModal();
@@ -73,64 +74,53 @@ const BadgeUploader = () => {
   }, [image]);
 
   const revisitFlow = async () => {
+    setUploading(true);
     const uploadInterval = setInterval(() => {
-      setUploadProgress((prevProgress) => Math.min(prevProgress + 1, 100));
-    }, 3000);
+      setUploadProgress((prevProgress) => Math.min(prevProgress + 5, 100));
+    }, 300);
 
     let circularBorderImage = null;
     if (await verifyBadgeFormat(image)) {
-      clearInterval(uploadInterval);
-      setUploadProgress(20);
-      // const resizedImageData = await resizeImage(imageData, 482, 482);
-      // const circularBadge = await createCircularBadge(resizedImageData);
-      // const gradientColors = [
-      //   "Red",
-      //   "orange",
-      //   "yellow",
-      //   "green",
-      //   "blue",
-      //   "indigo",
-      //   "violet",
-      // ]; // Customize with your desired colors
-      // circularBorderImage = await createAngledGradientBorder(
-      //   imageData,
-      //   gradientColors,
-      //   45
-      // );
-
-      // Set the circular border image as the image state
       if (await verifyPngFormat(image)) {
         setIsImagePng(true);
-        clearInterval(uploadInterval);
-        setUploadProgress(40);
         if (await verifySize(image)) {
           setIsImageOfCorrectSize(true);
-          clearInterval(uploadInterval);
-          setUploadProgress(60);
           if (await imageVerification(image)) {
             setIsImageVisiblePixelsInsideCircle(true);
-            clearInterval(uploadInterval);
-            setUploadProgress(80);
+            if (await checkHappiness(image)) {
+              setIsImageBorderHappy(true);
+              openModal();
+            } else {
+              setIsImageBorderHappy(false);
+              clearInterval(uploadInterval);
+              setUploading(false);
+              setUploadProgress(100);
+              openModal();
+            }
           } else {
             setIsImageVisiblePixelsInsideCircle(false);
             clearInterval(uploadInterval);
-            setUploadProgress(0);
+            setUploading(false);
+            setUploadProgress(80);
             openModal();
           }
         } else {
           setIsImageOfCorrectSize(false);
           clearInterval(uploadInterval);
-          setUploadProgress(0);
+          setUploading(false);
+          setUploadProgress(60);
           openModal();
         }
       } else {
         setIsImagePng(false);
         clearInterval(uploadInterval);
-        setUploadProgress(0);
+        setUploading(false);
+        setUploadProgress(40);
         openModal();
       }
     } else {
       clearInterval(uploadInterval);
+      setUploading(false);
       setUploadProgress(0);
       setVerificationError(
         "Invalid image format. We only support .png, .jpg or .jpeg"
@@ -147,80 +137,7 @@ const BadgeUploader = () => {
       const reader = new FileReader();
       reader.onload = async () => {
         const imageData = reader.result;
-        setUploading(true);
-        setVerificationError(null);
-        setUploadProgress(0);
-
-        // Simulate image upload progress
-        const uploadInterval = setInterval(() => {
-          setUploadProgress((prevProgress) => Math.min(prevProgress + 1, 100));
-        }, 3000);
-
-        let circularBorderImage = null;
-        if (await verifyBadgeFormat(imageData)) {
-          clearInterval(uploadInterval);
-          setUploadProgress(20);
-          // const resizedImageData = await resizeImage(imageData, 482, 482);
-          // const circularBadge = await createCircularBadge(resizedImageData);
-          // const gradientColors = [
-          //   "Red",
-          //   "orange",
-          //   "yellow",
-          //   "green",
-          //   "blue",
-          //   "indigo",
-          //   "violet",
-          // ]; // Customize with your desired colors
-          // circularBorderImage = await createAngledGradientBorder(
-          //   imageData,
-          //   gradientColors,
-          //   45
-          // );
-
-          // Set the circular border image as the image state
-          if (await verifyPngFormat(imageData)) {
-            setIsImagePng(true);
-            clearInterval(uploadInterval);
-            setUploadProgress(40);
-            if (await verifySize(imageData)) {
-              setIsImageOfCorrectSize(true);
-              clearInterval(uploadInterval);
-              setUploadProgress(60);
-              if (await imageVerification(imageData)) {
-                setIsImageVisiblePixelsInsideCircle(true);
-                clearInterval(uploadInterval);
-                setUploadProgress(80);
-                openModal();
-                setImage(imageData);
-              } else {
-                clearInterval(uploadInterval);
-                setUploadProgress(0);
-                openModal();
-                setImage(imageData);
-              }
-            } else {
-              clearInterval(uploadInterval);
-              setUploadProgress(0);
-              openModal();
-            }
-          } else {
-            clearInterval(uploadInterval);
-            setUploadProgress(0);
-            openModal();
-          }
-        } else {
-          clearInterval(uploadInterval);
-          setUploadProgress(0);
-          setVerificationError(
-            "Invalid image format. We only support .png, .jpg or .jpeg"
-          );
-          setImage(null);
-        }
-
-        setUploading(false);
-        if (circularBorderImage && !verificationError) {
-          openModal();
-        }
+        setImage(imageData);
       };
 
       reader.readAsDataURL(file);
@@ -249,7 +166,7 @@ const BadgeUploader = () => {
         <input
           id="fileInput"
           type="file"
-          accept=".png, .jpg, .jpeg"
+          accept=".png"
           onChange={handleImageUpload}
           style={{ display: "none" }}
         />
