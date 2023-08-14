@@ -52,15 +52,15 @@ const BadgeUploader = () => {
     hideModal();
   };
 
-  const handleImageSize = async () => {
-    const correctSize = await resizeImage(image, 512, 512);
+  const handleImageSize = () => {
+    const correctSize = resizeImage(image, 512, 512);
     setImage(correctSize);
     setIsImageOfCorrectSize(true);
     hideModal();
   };
 
-  const handleImagePixelsInsideCircle = async () => {
-    const insideCircle = await createCircularBadge(image);
+  const handleImagePixelsInsideCircle = () => {
+    const insideCircle = createCircularBadge(image);
     setImage(insideCircle);
     setIsImageVisiblePixelsInsideCircle(true);
     hideModal();
@@ -178,7 +178,6 @@ const BadgeUploader = () => {
           // );
 
           // Set the circular border image as the image state
-          setImage(imageData);
           if (await verifyPngFormat(imageData)) {
             setIsImagePng(true);
             clearInterval(uploadInterval);
@@ -191,10 +190,13 @@ const BadgeUploader = () => {
                 setIsImageVisiblePixelsInsideCircle(true);
                 clearInterval(uploadInterval);
                 setUploadProgress(80);
+                openModal();
+                setImage(imageData);
               } else {
                 clearInterval(uploadInterval);
                 setUploadProgress(0);
                 openModal();
+                setImage(imageData);
               }
             } else {
               clearInterval(uploadInterval);

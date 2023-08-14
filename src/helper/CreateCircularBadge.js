@@ -7,8 +7,8 @@ export const createCircularBadge = (imgData) => {
       const ctx = canvas.getContext("2d");
 
       const diameter = Math.min(image.width, image.height);
-      canvas.width = diameter * 2;
-      canvas.height = diameter * 2;
+      canvas.width = diameter;
+      canvas.height = diameter;
 
       ctx.beginPath();
       ctx.arc(diameter / 2, diameter / 2, diameter / 2, 0, 2 * Math.PI);
