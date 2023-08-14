@@ -71,8 +71,8 @@ const UploadForm = () => {
           </ParaText>
           <BadgeUploader />
           <ParaText>
-            <b>Pro Tip:</b>&nbsp; Use an Image of 512x512 dimensions to <br />
-            get optimal results.
+            <b>Note:</b>&nbsp; We only support Images of 512x512 <br />
+            or heigher dimensions.
           </ParaText>
         </Form>
       </FormContainer>

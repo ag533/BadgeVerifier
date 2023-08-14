@@ -25,6 +25,9 @@ const ButtonContainer = styled.div`
   flex-direction: row; /* Align the download button below the image */
   align-items: center;
   padding: 1.5rem;
+  @media (max-width: 720px) {
+    flex-direction: column;
+  }
 `;
 
 const ImageModal = ({
@@ -52,12 +55,17 @@ const ImageModal = ({
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      height: "40vh",
+      height: "60vh",
+      width: "50vw",
       fontSize: "calc(10px + 2vmin)",
       color: "black",
       fontWeight: 600,
       backgroundColor: "#e3e3dc",
       textAlign: "center",
+      justifyContent: "center",
+      alignItems: "center",
+      display: "flex",
+      flexDirection: "column",
     },
   };
 
@@ -86,8 +94,7 @@ const ImageModal = ({
     if (isImagePNGOfCorrectSize) {
       if (isImagePNGVisiblePixelsInsideCircle) {
         if (isImagePNGBorderHappy) {
-          modalMessage =
-            "Congratulations! Your badge is ready to be uploaded to your profile.";
+          modalMessage = "Congratulations! Your badge is ready to be uploaded";
           modalButtons = (
             <ButtonContainer>
               <LinkButton onClick={downloadImage}>Download</LinkButton>
@@ -95,8 +102,7 @@ const ImageModal = ({
             </ButtonContainer>
           );
         } else {
-          modalMessage =
-            "OOPS! Your uploaded image colour does not give a happy feeling.";
+          modalMessage = "OOPS! Please use happy colours";
           modalButtons = (
             <ButtonContainer>
               <LinkButton onClick={onRequestClose}>
@@ -106,8 +112,7 @@ const ImageModal = ({
           );
         }
       } else {
-        modalMessage =
-          "OOPS! Your uploaded badge visible pixels are not indside the circle.";
+        modalMessage = "OOPS! The image is not Circular";
         modalButtons = (
           <ButtonContainer>
             <LinkButton onClick={adjustImageInsideCircle}>
@@ -118,7 +123,7 @@ const ImageModal = ({
         );
       }
     } else {
-      modalMessage = "OOPS! Your uploaded badge is not of correct dimensions.";
+      modalMessage = "OOPS! Incorrect Dimensions.";
       modalButtons = (
         <ButtonContainer>
           <LinkButton onClick={resizeImg}>Resize Image</LinkButton>
@@ -127,7 +132,7 @@ const ImageModal = ({
       );
     }
   } else {
-    modalMessage = "OOPS! Your uploaded badge is not of PNG format.";
+    modalMessage = "OOPS! We only upload images of PNG format.";
     modalButtons = (
       <ButtonContainer>
         <LinkButton onClick={convertImg}>Convert Image</LinkButton>
@@ -149,7 +154,7 @@ const ImageModal = ({
         <ImageContainer>
           <img
             src={image}
-            style={{ width: "20vh", height: "20vh" }}
+            style={{ width: "200px", height: "200px" }}
             alt="Uploaded Badge"
           />
           {modalButtons}

@@ -68,15 +68,15 @@ const BadgeUploader = () => {
 
   useEffect(() => {
     if (image) {
-      revisitFlow();
+      verifyImage();
     }
   }, [image]);
 
-  const revisitFlow = async () => {
+  const verifyImage = async () => {
     setUploading(true);
     const uploadInterval = setInterval(() => {
       setUploadProgress((prevProgress) => Math.min(prevProgress + 5, 100));
-    }, 300);
+    }, 600);
 
     let circularBorderImage = null;
     if (await isUploadedFileAnImage(image)) {
@@ -120,7 +120,7 @@ const BadgeUploader = () => {
     } else {
       clearInterval(uploadInterval);
       setUploading(false);
-      setUploadProgress(0);
+      setUploadProgress(20);
       setVerificationError(
         "Invalid image format. We only support .png, .jpg or .jpeg"
       );

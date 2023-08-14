@@ -18,7 +18,6 @@ display: flex;
   color: #e1ab2c;
   cursor: pointer;
 }`;
-
 export const LinkButton = styled.a`
   ${ButtonStyle}
 `;

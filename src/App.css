@@ -45,7 +45,7 @@
 
 .App-footer {
   background-color: #e3e3dc;
-  min-height: 10vh;
+  min-height: 20vh;
   display: flex;
   flex-direction: row;
   align-items: center;
